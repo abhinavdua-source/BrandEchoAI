@@ -1,0 +1,174 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * BrandEcho AI design system — "Editor's Desk".
+ * Paper, ink and hairline rules, with a proofreader's red pen. All tokens live
+ * here: raw values on :root, mapped into Tailwind (bg-paper, text-ink,
+ * border-rule, font-serif, …) via @theme inline.
+ *
+ * Rules of the system: radius 0, no shadows, no gradients, no cards.
+ * Red is ONLY for flagged issues, strikethroughs, margin notes and the score.
+ */
+
+@theme inline {
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Editor's Desk palette */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-graphite: var(--graphite);
+  --color-rule: var(--rule);
+  --color-dashed: var(--dashed);
+  --color-red: var(--red);
+
+  /* shadcn/ui semantic tokens, mapped onto the palette */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--paper);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--paper);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper);
+  --color-muted-foreground: var(--graphite);
+  --color-accent: var(--rule);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--red);
+  --color-destructive-foreground: var(--paper);
+  --color-border: var(--rule);
+  --color-input: var(--rule);
+  --color-ring: var(--ink);
+  --color-ring-offset-background: var(--paper);
+}
+
+:root {
+  --paper: #f4f1ea;
+  --ink: #1a1a1a;
+  --body: #3a3833;
+  --graphite: #6b6760;
+  --rule: #d9d3c7;
+  --dashed: #a8a194;
+  --red: #c8281e;
+}
+
+@layer base {
+  * {
+    border-color: var(--rule);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Keep anchor targets clear of the sticky header. */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--body);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+  }
+
+  ::selection {
+    background: var(--rule);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Type scale */
+@utility text-h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+@utility text-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+@utility text-h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+@utility text-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+/* Layout */
+@utility container-desk {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1280px;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+/* Proofreader marks */
+@utility strike-red {
+  text-decoration-line: line-through;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+}
+
+/* Dashed stand-in for content we don't have yet (logos, testimonials). */
+@utility placeholder-dashed {
+  border: 1px dashed var(--dashed);
+  color: var(--graphite);
+}

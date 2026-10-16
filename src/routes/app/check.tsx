@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type FormEvent } from "react";
 import { z } from "zod/v4";
-import { runCheck } from "@/server/functions";
+import { runCheck } from "@/functions/brandecho";
 import { brandsQuery, usageQuery } from "@/lib/queries";
 import { CHANNELS, DRAFT_MAX_CHARS, RECHECK_KEY } from "@/lib/voice";
 import {

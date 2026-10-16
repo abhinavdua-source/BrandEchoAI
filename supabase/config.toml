@@ -1,1 +1,9 @@
-project_id = "ewakifrkfcsrmjjhmvsq"
+project_id = "jtnghlbpjggyuagmlqmk"
+[auth]
+site_url = "https://brandechoai.studio"
+additional_redirect_urls = [
+  "https://brandechoai.studio/**",
+  "https://www.brandechoai.studio/**",
+  "https://*-abhi-e3dc.vercel.app/**",
+  "http://localhost:5173/**",
+]

@@ -8,7 +8,7 @@ import {
   PDF_MAX_BYTES,
   type Attribute,
 } from "@/lib/voice";
-import { MODEL, UserFacingError, checkDraft, extractBrandProfile } from "./claude";
+import { MODEL, UserFacingError, checkDraft, extractBrandProfile } from "@/server/claude";
 
 /*
  * Server functions called from the app. Each one requires a signed-in user and

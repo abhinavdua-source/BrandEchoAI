@@ -14,159 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      plans: {
-        Row: {
-          id: string
-          name: string
-          price_cents: number
-          monthly_checks: number | null
-          max_brands: number | null
-          sort_order: number
-        }
-        Insert: {
-          id: string
-          name: string
-          price_cents: number
-          monthly_checks?: number | null
-          max_brands?: number | null
-          sort_order?: number
-        }
-        Update: {
-          id?: string
-          name?: string
-          price_cents?: number
-          monthly_checks?: number | null
-          max_brands?: number | null
-          sort_order?: number
-        }
-        Relationships: []
-      }
-      subscriptions: {
-        Row: {
-          user_id: string
-          plan_id: string
-          status: string
-          provider: string | null
-          provider_customer_id: string | null
-          provider_subscription_id: string | null
-          current_period_end: string | null
-          updated_at: string
-        }
-        Insert: {
-          user_id: string
-          plan_id?: string
-          status?: string
-          provider?: string | null
-          provider_customer_id?: string | null
-          provider_subscription_id?: string | null
-          current_period_end?: string | null
-          updated_at?: string
-        }
-        Update: {
-          user_id?: string
-          plan_id?: string
-          status?: string
-          provider?: string | null
-          provider_customer_id?: string | null
-          provider_subscription_id?: string | null
-          current_period_end?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       brands: {
         Row: {
-          id: string
-          user_id: string
-          name: string
-          summary: string
           attributes: Json
-          preferred_terms: string[]
           banned_terms: string[]
-          rules: string[]
+          created_at: string
           example_copy: string
           guidelines_text: string
           house_standard: number
-          created_at: string
+          id: string
+          name: string
+          preferred_terms: string[]
+          rules: string[]
+          summary: string
           updated_at: string
+          user_id: string
         }
         Insert: {
-          id?: string
-          user_id?: string
-          name: string
-          summary?: string
           attributes?: Json
-          preferred_terms?: string[]
           banned_terms?: string[]
-          rules?: string[]
+          created_at?: string
           example_copy?: string
           guidelines_text?: string
           house_standard?: number
-          created_at?: string
+          id?: string
+          name: string
+          preferred_terms?: string[]
+          rules?: string[]
+          summary?: string
           updated_at?: string
+          user_id?: string
         }
         Update: {
-          id?: string
-          user_id?: string
-          name?: string
-          summary?: string
           attributes?: Json
-          preferred_terms?: string[]
           banned_terms?: string[]
-          rules?: string[]
+          created_at?: string
           example_copy?: string
           guidelines_text?: string
           house_standard?: number
-          created_at?: string
+          id?: string
+          name?: string
+          preferred_terms?: string[]
+          rules?: string[]
+          summary?: string
           updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
       checks: {
         Row: {
-          id: string
-          user_id: string
           brand_id: string | null
           brand_name: string
           channel: string
-          title: string
-          draft: string
-          score: number
-          verdict: string
-          issues: Json
-          rewrite: string
-          model: string
           created_at: string
+          draft: string
+          id: string
+          issues: Json
+          model: string
+          rewrite: string
+          score: number
+          title: string
+          user_id: string
+          verdict: string
         }
         Insert: {
-          id?: string
-          user_id: string
           brand_id?: string | null
           brand_name: string
           channel?: string
-          title?: string
-          draft: string
-          score: number
-          verdict?: string
-          issues?: Json
-          rewrite?: string
-          model: string
           created_at?: string
+          draft: string
+          id?: string
+          issues?: Json
+          model: string
+          rewrite?: string
+          score: number
+          title?: string
+          user_id: string
+          verdict?: string
         }
         Update: {
-          id?: string
-          user_id?: string
           brand_id?: string | null
           brand_name?: string
           channel?: string
-          title?: string
-          draft?: string
-          score?: number
-          verdict?: string
-          issues?: Json
-          rewrite?: string
-          model?: string
           created_at?: string
+          draft?: string
+          id?: string
+          issues?: Json
+          model?: string
+          rewrite?: string
+          score?: number
+          title?: string
+          user_id?: string
+          verdict?: string
         }
         Relationships: [
           {
@@ -178,18 +118,112 @@ export type Database = {
           },
         ]
       }
+      plans: {
+        Row: {
+          id: string
+          max_brands: number | null
+          monthly_checks: number | null
+          name: string
+          price_cents: number
+          sort_order: number
+        }
+        Insert: {
+          id: string
+          max_brands?: number | null
+          monthly_checks?: number | null
+          name: string
+          price_cents: number
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          max_brands?: number | null
+          monthly_checks?: number | null
+          name?: string
+          price_cents?: number
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          current_period_end: string | null
+          plan_id: string
+          provider: string | null
+          provider_customer_id: string | null
+          provider_subscription_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_period_end?: string | null
+          plan_id?: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_period_end?: string | null
+          plan_id?: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      my_usage: {
-        Args: Record<PropertyKey, never>
-        Returns: { used: number; allowance: number | null; plan_id: string }[]
+      can_create_brand: { Args: never; Returns: boolean }
+      current_plan: {
+        Args: { uid: string }
+        Returns: {
+          id: string
+          max_brands: number | null
+          monthly_checks: number | null
+          name: string
+          price_cents: number
+          sort_order: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "plans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
-      can_create_brand: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
+      my_usage: {
+        Args: never
+        Returns: {
+          allowance: number
+          plan_id: string
+          used: number
+        }[]
+      }
+      usage_this_month: {
+        Args: { uid: string }
+        Returns: {
+          allowance: number
+          plan_id: string
+          used: number
+        }[]
       }
     }
     Enums: {

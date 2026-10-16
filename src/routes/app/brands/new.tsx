@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type ChangeEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { extractProfile } from "@/server/functions";
+import { extractProfile } from "@/functions/brandecho";
 import { canCreateBrandQuery } from "@/lib/queries";
 import { GUIDELINES_MAX_CHARS, PDF_MAX_BYTES } from "@/lib/voice";
 import { BrandForm, emptyBrand, type BrandDraft } from "@/components/app/BrandForm";

@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 const problems = [
   {
     title: "Inconsistent messaging",
@@ -15,24 +17,27 @@ const problems = [
 
 export function Problem() {
   return (
-    <section aria-labelledby="problem-title" className="py-20 lg:py-28">
-      <div className="container-desk">
-        <p className="text-label">The problem</p>
-        <h2 id="problem-title" className="text-h2 mt-5 max-w-4xl text-balance">
-          Your brand isn't just a logo. It's every word you publish.
-        </h2>
-
-        <ul className="mt-14 grid border-t border-ink md:grid-cols-3">
+    <section aria-labelledby="problem-title" className="border-t border-rule">
+      <div className="container-site section-y grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-[clamp(32px,5vw,64px)]">
+        <Reveal className="flex flex-col gap-3.5">
+          <p className="eyebrow">The problem</p>
+          <h2 id="problem-title" className="text-h2">
+            Your brand isn't just a logo. It's every word you publish.
+          </h2>
+        </Reveal>
+        <ul className="m-0 flex list-none flex-col p-0">
           {problems.map((p, i) => (
-            <li
+            <Reveal
+              as="li"
               key={p.title}
-              className={`border-b border-rule py-8 md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0 ${
-                i > 0 ? "md:border-l md:border-rule" : ""
-              }`}
+              index={i}
+              className={`grid grid-cols-[minmax(0,190px)_minmax(0,1fr)] gap-x-6 gap-y-2 border-t py-[18px] max-[480px]:grid-cols-1 ${
+                i === 0 ? "border-ink" : "border-rule"
+              } ${i === problems.length - 1 ? "border-b border-b-rule" : ""}`}
             >
-              <h3 className="text-h3">{p.title}</h3>
-              <p className="mt-3 text-[16px] leading-[1.55] text-body">{p.body}</p>
-            </li>
+              <h3 className="text-[17px] font-semibold">{p.title}</h3>
+              <p className="text-[16px] leading-[1.5] text-pretty text-muted">{p.body}</p>
+            </Reveal>
           ))}
         </ul>
       </div>

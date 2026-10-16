@@ -1,9 +1,21 @@
-/** Wordmark: "BrandEcho" in Newsreader italic, "AI" in Plex Mono on the same baseline. */
-export function Logo({ className = "" }: { className?: string }) {
+/**
+ * BrandEchoAI wordmark ("Ink" style from the handoff): "BrandEcho" in
+ * Newsreader 600 with "AI" set tight against it in red italic.
+ */
+export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const dark = tone === "dark";
   return (
-    <span className={`inline-flex items-baseline text-ink ${className}`}>
-      <span className="font-serif text-[26px] leading-none italic">BrandEcho</span>
-      <span className="ml-[0.35em] font-mono text-[15.5px] leading-none font-medium">AI</span>
+    <span
+      className={`font-serif text-[25px] leading-none font-semibold tracking-[-0.025em] ${
+        dark ? "text-on-dark" : "text-ink"
+      }`}
+    >
+      BrandEcho
+      <span
+        className={`font-medium tracking-[-0.01em] italic ${dark ? "text-red-on-dark" : "text-red"}`}
+      >
+        AI
+      </span>
     </span>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 
 const links = [
@@ -9,70 +8,81 @@ const links = [
   { label: "FAQ", href: "#faq" },
 ];
 
+// No login page yet.
+const LOGIN_HREF = "#";
+
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink bg-paper">
-      <div className="container-desk flex items-center justify-between gap-6 py-3">
-        <a
-          href="#top"
-          aria-label="BrandEcho AI, back to top"
-          className="flex min-h-11 items-center"
-        >
+    <header className="sticky top-0 z-50 border-b border-rule bg-paper/92 backdrop-blur-[8px]">
+      <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-6 px-6 py-[14px]">
+        <a href="#top" aria-label="BrandEchoAI home" className="flex items-baseline">
           <Logo />
         </a>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-7 text-[15px] nav:flex">
           {links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="flex min-h-11 items-center px-3 text-[15px] text-ink underline-offset-4 hover:underline"
-            >
+            <a key={l.href} href={l.href} className="text-ink hover:text-red">
               {l.label}
             </a>
           ))}
-          <a
-            href="#"
-            className="flex min-h-11 items-center px-3 text-[15px] text-ink underline-offset-4 hover:underline"
-          >
+        </nav>
+        <div className="hidden items-center gap-[18px] text-[15px] nav:flex">
+          <a href={LOGIN_HREF} className="text-ink hover:text-red">
             Log in
           </a>
-          <Button asChild size="sm" className="ml-3">
-            <a href="#signup">Start free</a>
-          </Button>
-        </nav>
+          <a
+            href="#signup"
+            className="rounded-btn bg-ink px-4 py-2.5 font-medium text-on-dark transition-colors duration-200 hover:bg-red hover:text-white"
+          >
+            Start free
+          </a>
+        </div>
 
         <button
           type="button"
           aria-expanded={open}
-          aria-controls="mobile-nav"
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className="min-h-11 px-1 font-mono text-[13px] tracking-[0.08em] text-ink uppercase underline-offset-4 hover:underline lg:hidden"
+          className="min-h-11 rounded-btn border border-outline px-3.5 text-[14px] font-medium text-ink nav:hidden"
         >
           {open ? "Close" : "Menu"}
         </button>
       </div>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Main" className="border-t border-rule lg:hidden">
-          <div className="container-desk flex flex-col pb-6">
-            {[...links, { label: "Log in", href: "#" }].map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center border-b border-rule text-[16px] text-ink"
-              >
-                {l.label}
-              </a>
-            ))}
-            <Button asChild className="mt-5">
-              <a href="#signup" onClick={() => setOpen(false)}>
-                Start free
-              </a>
-            </Button>
+        <nav
+          id="mobile-menu"
+          aria-label="Main"
+          className="flex flex-col border-t border-rule px-6 pt-1 pb-5 text-[17px] nav:hidden"
+        >
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={close}
+              className="border-b border-rule-soft py-3 text-ink hover:text-red"
+            >
+              {l.label}
+            </a>
+          ))}
+          <div className="flex gap-3 pt-4">
+            <a
+              href={LOGIN_HREF}
+              onClick={close}
+              className="flex-1 rounded-btn border border-outline p-3 text-center text-ink"
+            >
+              Log in
+            </a>
+            <a
+              href="#signup"
+              onClick={close}
+              className="flex-1 rounded-btn bg-ink p-3 text-center font-medium text-on-dark hover:bg-red hover:text-white"
+            >
+              Start free
+            </a>
           </div>
         </nav>
       )}

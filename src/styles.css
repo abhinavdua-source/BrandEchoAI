@@ -1,73 +1,105 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
 
 /*
- * BrandEcho AI design system — "Editor's Desk".
- * Paper, ink and hairline rules, with a proofreader's red pen. All tokens live
- * here: raw values on :root, mapped into Tailwind (bg-paper, text-ink,
+ * BrandEchoAI design system — "Editor's desk" (handoff, Oct 2026).
+ * Warm paper, serif headlines, red editor's marks. All tokens live here:
+ * raw OKLCH values on :root, mapped into Tailwind (bg-paper, text-ink,
  * border-rule, font-serif, …) via @theme inline.
- *
- * Rules of the system: radius 0, no shadows, no gradients, no cards.
- * Red is ONLY for flagged issues, strikethroughs, margin notes and the score.
  */
 
 @theme inline {
-  --radius-xs: 0;
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-  --radius-2xl: 0;
-  --radius-3xl: 0;
-  --radius-4xl: 0;
+  --radius-tag: 3px;
+  --radius-seg: 4px;
+  --radius-btn: 6px;
+  --radius-panel: 8px;
+  --radius-card: 10px;
 
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Editor's Desk palette */
+  --breakpoint-nav: 820px;
+
+  /* Palette */
   --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-tint: var(--tint);
+  --color-panel: var(--panel);
+  --color-seg: var(--seg);
   --color-ink: var(--ink);
-  --color-body: var(--body);
-  --color-graphite: var(--graphite);
+  --color-ink-line: var(--ink-line);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-secondary: var(--secondary);
+  --color-note: var(--note);
   --color-rule: var(--rule);
-  --color-dashed: var(--dashed);
+  --color-rule-soft: var(--rule-soft);
+  --color-rule-dash: var(--rule-dash);
+  --color-outline: var(--outline);
   --color-red: var(--red);
+  --color-red-on-dark: var(--red-on-dark);
+  --color-green: var(--green);
+  --color-green-text: var(--green-text);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --color-on-dark-faint: var(--on-dark-faint);
+  --color-white: var(--white);
 
   /* shadcn/ui semantic tokens, mapped onto the palette */
   --color-background: var(--paper);
   --color-foreground: var(--ink);
-  --color-card: var(--paper);
+  --color-card: var(--surface);
   --color-card-foreground: var(--ink);
-  --color-popover: var(--paper);
+  --color-popover: var(--surface);
   --color-popover-foreground: var(--ink);
   --color-primary: var(--ink);
-  --color-primary-foreground: var(--paper);
-  --color-secondary: var(--paper);
+  --color-primary-foreground: var(--on-dark);
   --color-secondary-foreground: var(--ink);
-  --color-muted: var(--paper);
-  --color-muted-foreground: var(--graphite);
-  --color-accent: var(--rule);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--tint);
   --color-accent-foreground: var(--ink);
   --color-destructive: var(--red);
-  --color-destructive-foreground: var(--paper);
+  --color-destructive-foreground: var(--white);
   --color-border: var(--rule);
-  --color-input: var(--rule);
+  --color-input: var(--outline);
   --color-ring: var(--ink);
-  --color-ring-offset-background: var(--paper);
+
+  --shadow-card: 0 1px 0 var(--rule-card), 0 24px 48px -28px oklch(0.3 0.02 60 / 0.25);
+  --shadow-seg: 0 1px 2px oklch(0.3 0.02 60 / 0.15);
+
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
-  --paper: #f4f1ea;
-  --ink: #1a1a1a;
-  --body: #3a3833;
-  --graphite: #6b6760;
-  --rule: #d9d3c7;
-  --dashed: #a8a194;
-  --red: #c8281e;
+  --paper: oklch(0.975 0.008 85);
+  --surface: oklch(0.995 0.003 85);
+  --tint: oklch(0.955 0.012 85);
+  --panel: oklch(0.965 0.01 85);
+  --seg: oklch(0.95 0.008 85);
+  --ink: oklch(0.21 0.012 60);
+  --ink-line: oklch(0.42 0.012 60);
+  --ink-soft: oklch(0.38 0.012 60);
+  --muted: oklch(0.42 0.012 60);
+  --secondary: oklch(0.45 0.012 60);
+  --note: oklch(0.36 0.012 60);
+  --rule: oklch(0.89 0.01 80);
+  --rule-card: oklch(0.88 0.01 80);
+  --rule-soft: oklch(0.91 0.008 80);
+  --rule-dash: oklch(0.86 0.01 80);
+  --outline: oklch(0.8 0.01 80);
+  --red: oklch(0.55 0.16 30);
+  --red-on-dark: oklch(0.72 0.13 30);
+  --green: oklch(0.55 0.13 150);
+  --green-text: oklch(0.48 0.13 150);
+  --on-dark: oklch(0.98 0.006 85);
+  --on-dark-muted: oklch(0.8 0.01 80);
+  --on-dark-faint: oklch(0.7 0.01 80);
+  --white: oklch(0.99 0.004 85);
 }
 
 @layer base {
@@ -81,28 +113,22 @@
 
   /* Keep anchor targets clear of the sticky header. */
   [id] {
-    scroll-margin-top: 80px;
+    scroll-margin-top: 64px;
   }
 
   body {
     background-color: var(--paper);
-    color: var(--body);
+    color: var(--ink);
     font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1,
-  h2,
-  h3 {
-    color: var(--ink);
-    font-family: var(--font-serif);
-    font-optical-sizing: auto;
+  a {
+    transition: color 200ms var(--ease-glide);
   }
 
   ::selection {
-    background: var(--rule);
+    background: oklch(0.55 0.16 30 / 0.18);
     color: var(--ink);
   }
 
@@ -118,57 +144,90 @@
   }
 }
 
-/* Type scale */
-@utility text-h1 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(48px, 7vw, 96px);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
+/* Type */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
 }
 
 @utility text-h2 {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(36px, 4.5vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-
-@utility text-h3 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 1.2;
-}
-
-@utility text-label {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--graphite);
+  font-size: clamp(32px, 3.6vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 /* Layout */
-@utility container-desk {
+@utility container-site {
   margin-inline: auto;
   width: 100%;
-  max-width: 1280px;
-  padding-inline: clamp(16px, 4vw, 48px);
+  max-width: 1160px;
+  padding-inline: 24px;
 }
 
-/* Proofreader marks */
-@utility strike-red {
+@utility section-y {
+  padding-block: clamp(56px, 7vw, 88px);
+}
+
+/* Editor's marks in the hero example */
+@utility mark-cut {
   text-decoration-line: line-through;
   text-decoration-color: var(--red);
   text-decoration-thickness: 2px;
+  background: oklch(0.55 0.16 30 / 0.09);
+  padding-inline: 2px;
 }
 
-/* Dashed stand-in for content we don't have yet (logos, testimonials). */
-@utility placeholder-dashed {
-  border: 1px dashed var(--dashed);
-  color: var(--graphite);
+@utility mark-fix {
+  background: oklch(0.55 0.13 150 / 0.12);
+  padding-inline: 2px;
+}
+
+/*
+ * Scroll reveals. Only active once the inline head script adds `.motion` to
+ * <html> (skipped for reduced motion, and removed again if the app never
+ * hydrates), so content is always visible without JavaScript.
+ */
+.motion [data-reveal="scroll"] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 800ms var(--ease-glide),
+    transform 900ms var(--ease-glide);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.motion [data-reveal="scroll"].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Above the fold: plays on first paint, no JavaScript needed. */
+.motion [data-reveal="load"] {
+  animation: reveal-in 900ms var(--ease-glide) both;
+  animation-delay: calc(var(--reveal-i, 0) * 80ms + 60ms);
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Lenis drives scrolling when active; native smooth scroll would fight it. */
+html.lenis,
+html.lenis body {
+  scroll-behavior: auto;
 }

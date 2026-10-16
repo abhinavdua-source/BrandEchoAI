@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { Reveal } from "./Reveal";
 
 const plans = [
   {
     name: "Starter",
     price: "$19",
     period: "/mo",
-    features: ["100 checks", "Brand profile", "Rewrites"],
+    features: ["100 checks a month", "Brand profile", "Rewrites"],
     cta: { label: "Start free", href: "#signup" },
     recommended: false,
   },
@@ -29,54 +29,69 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" aria-labelledby="pricing-title" className="py-20 lg:py-28">
-      <div className="container-desk">
-        <p className="text-label">Pricing</p>
-        <h2 id="pricing-title" className="text-h2 mt-5 max-w-3xl text-balance">
-          Simple plans that scale with your brand
-        </h2>
-
-        <div className="mt-14 grid md:grid-cols-3">
-          {plans.map((p, i) => (
-            <article
-              key={p.name}
-              aria-labelledby={`plan-${i}`}
-              className={`flex flex-col pb-10 md:px-8 md:first:pl-0 md:last:pr-0 ${
-                i > 0 ? "md:border-l md:border-l-rule" : ""
-              } ${p.recommended ? "border-t-4 border-t-ink pt-6" : "border-t border-t-rule pt-[27px]"}`}
-            >
-              {/* Label row is kept on every plan (empty when not recommended) so prices align. */}
-              <p
-                aria-hidden={!p.recommended}
-                className="min-h-[18px] font-mono text-[13px] leading-[18px] tracking-[0.08em] text-ink uppercase"
+    <section id="pricing" aria-labelledby="pricing-title" className="border-t border-rule bg-tint">
+      <div className="container-site section-y flex flex-col gap-10">
+        <Reveal className="flex flex-col gap-3.5">
+          <p className="eyebrow">Pricing</p>
+          <h2 id="pricing-title" className="text-h2">
+            Simple plans that scale with your brand
+          </h2>
+        </Reveal>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] items-stretch gap-4">
+          {plans.map((p, i) => {
+            const dark = p.recommended;
+            return (
+              <Reveal
+                as="article"
+                key={p.name}
+                index={i}
+                aria-labelledby={`plan-${i}`}
+                className={`flex flex-col gap-5 rounded-card p-7 ${
+                  dark ? "bg-ink text-on-dark" : "border border-[var(--rule-card)] bg-surface"
+                }`}
               >
-                {p.recommended ? "Recommended" : ""}
-              </p>
-              <h3 id={`plan-${i}`} className="text-h3 mt-2">
-                {p.name}
-              </h3>
-              <p className="mt-6 flex items-baseline gap-1">
-                <span className="font-serif text-[56px] leading-none text-ink">{p.price}</span>
-                {p.period && (
-                  <span className="font-mono text-[15px] text-graphite">{p.period}</span>
-                )}
-              </p>
-              <ul className="mt-8 flex-1 border-t border-rule">
-                {p.features.map((f) => (
-                  <li key={f} className="border-b border-rule py-3 text-[16px] text-body">
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                asChild
-                variant={p.recommended ? "default" : "outline"}
-                className="mt-8 w-full"
-              >
-                <a href={p.cta.href}>{p.cta.label}</a>
-              </Button>
-            </article>
-          ))}
+                <div className="flex items-center justify-between gap-3">
+                  <h3 id={`plan-${i}`} className="text-[17px] font-semibold">
+                    {p.name}
+                  </h3>
+                  {dark && (
+                    <span className="rounded-tag bg-red px-2 py-1 font-mono text-[11px] font-medium tracking-[0.06em] text-white uppercase">
+                      Recommended
+                    </span>
+                  )}
+                </div>
+                <p className="flex items-baseline gap-1">
+                  <span className="font-serif text-[52px] leading-none">{p.price}</span>
+                  {p.period && (
+                    <span
+                      className={`text-[15px] ${dark ? "text-on-dark-muted" : "text-secondary"}`}
+                    >
+                      {p.period}
+                    </span>
+                  )}
+                </p>
+                <ul
+                  className={`m-0 flex flex-1 list-none flex-col gap-2.5 border-t p-0 pt-4 text-[15px] ${
+                    dark ? "border-ink-soft" : "border-rule-soft"
+                  }`}
+                >
+                  {p.features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+                <a
+                  href={p.cta.href}
+                  className={`rounded-btn p-3 text-center font-medium transition-colors duration-200 ${
+                    dark
+                      ? "bg-on-dark text-ink hover:bg-red hover:text-white"
+                      : "border border-ink text-ink hover:bg-ink hover:text-on-dark"
+                  }`}
+                >
+                  {p.cta.label}
+                </a>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

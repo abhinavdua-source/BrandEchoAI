@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 const features = [
   {
     name: "Brand voice analysis",
@@ -18,26 +20,26 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" aria-labelledby="features-title" className="py-20 lg:py-28">
-      <div className="container-desk grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
-        <div>
-          <p className="text-label">Features</p>
-          <h2 id="features-title" className="text-h2 mt-5 text-balance">
+    <section id="features" aria-labelledby="features-title">
+      <div className="container-site section-y flex flex-col gap-10">
+        <Reveal className="flex flex-col gap-3.5">
+          <p className="eyebrow">Features</p>
+          <h2 id="features-title" className="text-h2">
             What's on the desk
           </h2>
-        </div>
-
-        <dl className="border-t border-ink">
-          {features.map((f) => (
-            <div
+        </Reveal>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] border-t border-l border-t-ink border-l-rule">
+          {features.map((f, i) => (
+            <Reveal
               key={f.name}
-              className="grid gap-2 border-b border-rule py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-8"
+              index={i % 3}
+              className="flex flex-col gap-2 border-r border-b border-rule px-6 pt-6 pb-7"
             >
-              <dt className="font-serif text-[24px] leading-[1.25] text-ink">{f.name}</dt>
-              <dd className="text-[16px] leading-[1.55] text-body sm:pt-1">{f.body}</dd>
-            </div>
+              <h3 className="text-[17px] font-semibold">{f.name}</h3>
+              <p className="text-[15px] leading-[1.5] text-muted">{f.body}</p>
+            </Reveal>
           ))}
-        </dl>
+        </div>
       </div>
     </section>
   );

@@ -11,10 +11,8 @@ const columns = [
   },
   {
     title: "Company",
-    // No About, Careers, Privacy or Terms pages yet.
+    // Privacy and Terms pages don't exist yet.
     links: [
-      { label: "About", href: "#" },
-      { label: "Careers", href: "#" },
       { label: "Privacy", href: "#" },
       { label: "Terms", href: "#" },
     ],
@@ -23,34 +21,29 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-ink pt-12 pb-10">
-      <div className="container-desk">
-        <div className="grid gap-10 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]">
-          <div>
-            <Logo />
-            <p className="mt-4 max-w-xs text-[15px] leading-[1.55] text-body">
-              Brand voice, checked before it ships.
-            </p>
+    <footer className="bg-ink text-on-dark">
+      <div className="container-site flex flex-col gap-9 pt-12 pb-7">
+        <div className="flex flex-wrap justify-between gap-8">
+          <div className="flex flex-col gap-2.5">
+            <Logo tone="dark" />
+            <p className="text-[15px] text-on-dark-muted">Brand voice, checked before it ships.</p>
           </div>
-          {columns.map((c) => (
-            <nav key={c.title} aria-label={c.title}>
-              <p className="text-label">{c.title}</p>
-              <ul className="mt-3">
+          <div className="flex flex-wrap gap-14 text-[15px]">
+            {columns.map((c) => (
+              <nav key={c.title} aria-label={c.title} className="flex flex-col gap-2.5">
+                <span className="font-mono text-[12px] font-medium tracking-[0.08em] text-on-dark-faint uppercase">
+                  {c.title}
+                </span>
                 {c.links.map((l) => (
-                  <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="flex min-h-11 items-center text-[15px] text-ink underline-offset-4 hover:underline"
-                    >
-                      {l.label}
-                    </a>
-                  </li>
+                  <a key={l.label} href={l.href} className="text-on-dark hover:text-red-on-dark">
+                    {l.label}
+                  </a>
                 ))}
-              </ul>
-            </nav>
-          ))}
+              </nav>
+            ))}
+          </div>
         </div>
-        <p className="mt-12 border-t border-rule pt-6 font-mono text-[13px] text-graphite">
+        <p className="border-t border-ink-soft pt-5 text-[13px] text-on-dark-faint">
           © 2026 BrandEcho AI
         </p>
       </div>

@@ -10,7 +10,7 @@ export function FinalCta() {
         </h2>
         <div id="demo" className="flex flex-wrap gap-3">
           <a
-            href="#signup"
+            href="/signup"
             className="rounded-btn bg-white px-[22px] py-[14px] text-[16px] font-medium text-ink transition-colors duration-200 hover:bg-ink hover:text-white"
           >
             Start free

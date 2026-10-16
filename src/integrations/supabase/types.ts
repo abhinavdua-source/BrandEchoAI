@@ -14,13 +14,183 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      plans: {
+        Row: {
+          id: string
+          name: string
+          price_cents: number
+          monthly_checks: number | null
+          max_brands: number | null
+          sort_order: number
+        }
+        Insert: {
+          id: string
+          name: string
+          price_cents: number
+          monthly_checks?: number | null
+          max_brands?: number | null
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          price_cents?: number
+          monthly_checks?: number | null
+          max_brands?: number | null
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          user_id: string
+          plan_id: string
+          status: string
+          provider: string | null
+          provider_customer_id: string | null
+          provider_subscription_id: string | null
+          current_period_end: string | null
+          updated_at: string
+        }
+        Insert: {
+          user_id: string
+          plan_id?: string
+          status?: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          current_period_end?: string | null
+          updated_at?: string
+        }
+        Update: {
+          user_id?: string
+          plan_id?: string
+          status?: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          current_period_end?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      brands: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          summary: string
+          attributes: Json
+          preferred_terms: string[]
+          banned_terms: string[]
+          rules: string[]
+          example_copy: string
+          guidelines_text: string
+          house_standard: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          name: string
+          summary?: string
+          attributes?: Json
+          preferred_terms?: string[]
+          banned_terms?: string[]
+          rules?: string[]
+          example_copy?: string
+          guidelines_text?: string
+          house_standard?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          summary?: string
+          attributes?: Json
+          preferred_terms?: string[]
+          banned_terms?: string[]
+          rules?: string[]
+          example_copy?: string
+          guidelines_text?: string
+          house_standard?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      checks: {
+        Row: {
+          id: string
+          user_id: string
+          brand_id: string | null
+          brand_name: string
+          channel: string
+          title: string
+          draft: string
+          score: number
+          verdict: string
+          issues: Json
+          rewrite: string
+          model: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          brand_id?: string | null
+          brand_name: string
+          channel?: string
+          title?: string
+          draft: string
+          score: number
+          verdict?: string
+          issues?: Json
+          rewrite?: string
+          model: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          brand_id?: string | null
+          brand_name?: string
+          channel?: string
+          title?: string
+          draft?: string
+          score?: number
+          verdict?: string
+          issues?: Json
+          rewrite?: string
+          model?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checks_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      my_usage: {
+        Args: Record<PropertyKey, never>
+        Returns: { used: number; allowance: number | null; plan_id: string }[]
+      }
+      can_create_brand: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

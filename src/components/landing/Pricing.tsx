@@ -6,7 +6,7 @@ const plans = [
     price: "$19",
     period: "/mo",
     features: ["100 checks a month", "Brand profile", "Rewrites"],
-    cta: { label: "Start free", href: "#signup" },
+    cta: { label: "Start free", href: "/signup" },
     recommended: false,
   },
   {
@@ -14,7 +14,7 @@ const plans = [
     price: "$49",
     period: "/mo",
     features: ["Everything in Starter", "Unlimited checks", "Team review", "API access"],
-    cta: { label: "Start free trial", href: "#signup" },
+    cta: { label: "Start free", href: "/signup" },
     recommended: true,
   },
   {

@@ -10,33 +10,208 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppAccountRouteImport } from './routes/app/account'
+import { Route as AppBillingRouteImport } from './routes/app/billing'
+import { Route as AppCheckRouteImport } from './routes/app/check'
+import { Route as AppHistoryRouteImport } from './routes/app/history'
+import { Route as AppBrandsIndexRouteImport } from './routes/app/brands/index'
+import { Route as AppBrandsBrandIdRouteImport } from './routes/app/brands/$brandId'
+import { Route as AppBrandsNewRouteImport } from './routes/app/brands/new'
+import { Route as AppChecksCheckIdRouteImport } from './routes/app/checks/$checkId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAccountRoute = AppAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBillingRoute = AppBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckRoute = AppCheckRouteImport.update({
+  id: '/check',
+  path: '/check',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBrandsIndexRoute = AppBrandsIndexRouteImport.update({
+  id: '/brands/',
+  path: '/brands/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBrandsBrandIdRoute = AppBrandsBrandIdRouteImport.update({
+  id: '/brands/$brandId',
+  path: '/brands/$brandId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBrandsNewRoute = AppBrandsNewRouteImport.update({
+  id: '/brands/new',
+  path: '/brands/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChecksCheckIdRoute = AppChecksCheckIdRouteImport.update({
+  id: '/checks/$checkId',
+  path: '/checks/$checkId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
+  '/app/account': typeof AppAccountRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/check': typeof AppCheckRoute
+  '/app/history': typeof AppHistoryRoute
+  '/app/': typeof AppIndexRoute
+  '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
+  '/app/brands/new': typeof AppBrandsNewRoute
+  '/app/checks/$checkId': typeof AppChecksCheckIdRoute
+  '/app/brands/': typeof AppBrandsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
+  '/app/account': typeof AppAccountRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/check': typeof AppCheckRoute
+  '/app/history': typeof AppHistoryRoute
+  '/app': typeof AppIndexRoute
+  '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
+  '/app/brands/new': typeof AppBrandsNewRoute
+  '/app/checks/$checkId': typeof AppChecksCheckIdRoute
+  '/app/brands': typeof AppBrandsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
+  '/app/account': typeof AppAccountRoute
+  '/app/billing': typeof AppBillingRoute
+  '/app/check': typeof AppCheckRoute
+  '/app/history': typeof AppHistoryRoute
+  '/app/': typeof AppIndexRoute
+  '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
+  '/app/brands/new': typeof AppBrandsNewRoute
+  '/app/checks/$checkId': typeof AppChecksCheckIdRoute
+  '/app/brands/': typeof AppBrandsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/forgot-password'
+    | '/login'
+    | '/reset-password'
+    | '/signup'
+    | '/app/account'
+    | '/app/billing'
+    | '/app/check'
+    | '/app/history'
+    | '/app/'
+    | '/app/brands/$brandId'
+    | '/app/brands/new'
+    | '/app/checks/$checkId'
+    | '/app/brands/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/reset-password'
+    | '/signup'
+    | '/app/account'
+    | '/app/billing'
+    | '/app/check'
+    | '/app/history'
+    | '/app'
+    | '/app/brands/$brandId'
+    | '/app/brands/new'
+    | '/app/checks/$checkId'
+    | '/app/brands'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/forgot-password'
+    | '/login'
+    | '/reset-password'
+    | '/signup'
+    | '/app/account'
+    | '/app/billing'
+    | '/app/check'
+    | '/app/history'
+    | '/app/'
+    | '/app/brands/$brandId'
+    | '/app/brands/new'
+    | '/app/checks/$checkId'
+    | '/app/brands/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +223,140 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/account': {
+      id: '/app/account'
+      path: '/account'
+      fullPath: '/app/account'
+      preLoaderRoute: typeof AppAccountRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/billing': {
+      id: '/app/billing'
+      path: '/billing'
+      fullPath: '/app/billing'
+      preLoaderRoute: typeof AppBillingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/check': {
+      id: '/app/check'
+      path: '/check'
+      fullPath: '/app/check'
+      preLoaderRoute: typeof AppCheckRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/history': {
+      id: '/app/history'
+      path: '/history'
+      fullPath: '/app/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/brands/': {
+      id: '/app/brands/'
+      path: '/brands'
+      fullPath: '/app/brands/'
+      preLoaderRoute: typeof AppBrandsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/brands/$brandId': {
+      id: '/app/brands/$brandId'
+      path: '/brands/$brandId'
+      fullPath: '/app/brands/$brandId'
+      preLoaderRoute: typeof AppBrandsBrandIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/brands/new': {
+      id: '/app/brands/new'
+      path: '/brands/new'
+      fullPath: '/app/brands/new'
+      preLoaderRoute: typeof AppBrandsNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checks/$checkId': {
+      id: '/app/checks/$checkId'
+      path: '/checks/$checkId'
+      fullPath: '/app/checks/$checkId'
+      preLoaderRoute: typeof AppChecksCheckIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAccountRoute: typeof AppAccountRoute
+  AppBillingRoute: typeof AppBillingRoute
+  AppCheckRoute: typeof AppCheckRoute
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppBrandsBrandIdRoute: typeof AppBrandsBrandIdRoute
+  AppBrandsNewRoute: typeof AppBrandsNewRoute
+  AppChecksCheckIdRoute: typeof AppChecksCheckIdRoute
+  AppBrandsIndexRoute: typeof AppBrandsIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAccountRoute: AppAccountRoute,
+  AppBillingRoute: AppBillingRoute,
+  AppCheckRoute: AppCheckRoute,
+  AppHistoryRoute: AppHistoryRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppBrandsBrandIdRoute: AppBrandsBrandIdRoute,
+  AppBrandsNewRoute: AppBrandsNewRoute,
+  AppChecksCheckIdRoute: AppChecksCheckIdRoute,
+  AppBrandsIndexRoute: AppBrandsIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

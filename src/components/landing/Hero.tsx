@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Reveal } from "./Reveal";
 import { btnInk, btnOutline } from "./styles";
@@ -178,9 +179,9 @@ export function Hero() {
           best editor would, flags what's off, and rewrites it in your voice.
         </Reveal>
         <Reveal immediate index={3} className="flex flex-wrap gap-3 pt-1">
-          <a href="#signup" className={btnInk}>
+          <Link to="/signup" className={btnInk}>
             Start free
-          </a>
+          </Link>
           <a href="#demo" className={btnOutline}>
             Book a demo
           </a>

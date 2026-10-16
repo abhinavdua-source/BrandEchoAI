@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 
 const links = [
@@ -8,8 +9,6 @@ const links = [
   { label: "FAQ", href: "#faq" },
 ];
 
-// No login page yet.
-const LOGIN_HREF = "#";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -30,15 +29,15 @@ export function Nav() {
           ))}
         </nav>
         <div className="hidden items-center gap-[18px] text-[15px] nav:flex">
-          <a href={LOGIN_HREF} className="text-ink hover:text-red">
+          <Link to="/login" className="text-ink hover:text-red">
             Log in
-          </a>
-          <a
-            href="#signup"
+          </Link>
+          <Link
+            to="/signup"
             className="rounded-btn bg-ink px-4 py-2.5 font-medium text-on-dark transition-colors duration-200 hover:bg-red hover:text-white"
           >
             Start free
-          </a>
+          </Link>
         </div>
 
         <button
@@ -69,20 +68,20 @@ export function Nav() {
             </a>
           ))}
           <div className="flex gap-3 pt-4">
-            <a
-              href={LOGIN_HREF}
+            <Link
+              to="/login"
               onClick={close}
               className="flex-1 rounded-btn border border-outline p-3 text-center text-ink"
             >
               Log in
-            </a>
-            <a
-              href="#signup"
+            </Link>
+            <Link
+              to="/signup"
               onClick={close}
               className="flex-1 rounded-btn bg-ink p-3 text-center font-medium text-on-dark hover:bg-red hover:text-white"
             >
               Start free
-            </a>
+            </Link>
           </div>
         </nav>
       )}

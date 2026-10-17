@@ -7,3 +7,8 @@ additional_redirect_urls = [
   "https://*-abhi-e3dc.vercel.app/**",
   "http://localhost:5173/**",
 ]
+
+[auth.email]
+# Off until custom SMTP (Resend) is set up: Supabase's built-in mailer only
+# reaches project team members. Turn back on once emails can be delivered.
+enable_confirmations = false

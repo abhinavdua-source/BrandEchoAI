@@ -15,6 +15,12 @@ import { MODEL, UserFacingError, checkDraft, extractBrandProfile } from "@/serve
  * talks to Supabase with that user's session, so row-level security applies.
  */
 
+/** Default check title: the draft's first non-empty line, shortened. */
+function defaultTitle(text: string) {
+  const line = text.split("\n").map((l) => l.trim()).find(Boolean) ?? "";
+  return line.length > 60 ? `${line.slice(0, 57).trimEnd()}…` : line;
+}
+
 function rethrow(err: unknown): never {
   // Only messages we wrote ourselves reach the browser.
   if (err instanceof UserFacingError) throw new Error(err.message);
@@ -93,7 +99,7 @@ export const runCheck = createServerFn({ method: "POST" })
           brand_id: brand.id,
           brand_name: brand.name,
           channel: data.channel,
-          title: data.title || data.text.slice(0, 60),
+          title: data.title || defaultTitle(data.text),
           draft: data.text,
           score: result.score,
           verdict: result.verdict,

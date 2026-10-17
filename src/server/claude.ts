@@ -33,8 +33,18 @@ const FALLBACK = {
   fallbacks: "default" as const,
 };
 
-function toUserError(err: unknown): never {
+// The API reports an empty prepaid balance as a plain 400 with no dedicated
+// error type, so this is identified from the error body.
+function isBillingError(err: InstanceType<typeof Anthropic.APIError>) {
+  return /credit balance/i.test(err.message);
+}
+
+function toUserError(err: unknown, input: "guidelines" | "draft"): never {
   if (err instanceof UserFacingError) throw err;
+  if (err instanceof Anthropic.APIError && isBillingError(err)) {
+    console.error("[claude] Anthropic account is out of credit", err.message);
+    throw new UserFacingError("The checker is temporarily unavailable. Please try again later.");
+  }
   if (err instanceof Anthropic.RateLimitError) {
     throw new UserFacingError("The checker is busy right now. Try again in a minute.");
   }
@@ -44,7 +54,11 @@ function toUserError(err: unknown): never {
   }
   if (err instanceof Anthropic.BadRequestError) {
     console.error("[claude] bad request", err.message);
-    throw new UserFacingError("That input couldn't be processed. Try a shorter or different file.");
+    throw new UserFacingError(
+      input === "guidelines"
+        ? "Those guidelines couldn't be read. Try a smaller PDF or paste the text instead."
+        : "This draft couldn't be checked. Try editing it and checking again.",
+    );
   }
   if (err instanceof Anthropic.APIError) {
     console.error(`[claude] API error ${err.status}`, err.message);
@@ -97,7 +111,7 @@ export async function extractBrandProfile(
     });
     return finish(response);
   } catch (err) {
-    toUserError(err);
+    toUserError(err, "guidelines");
   }
 }
 
@@ -170,6 +184,6 @@ export async function checkDraft(
     const result = finish(response);
     return { ...result, score: Math.max(0, Math.min(100, Math.round(result.score))) };
   } catch (err) {
-    toUserError(err);
+    toUserError(err, "draft");
   }
 }

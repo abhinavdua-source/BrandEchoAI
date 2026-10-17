@@ -118,6 +118,39 @@ export type Database = {
           },
         ]
       }
+      demo_requests: {
+        Row: {
+          company: string
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          team_size: string
+          user_id: string | null
+        }
+        Insert: {
+          company?: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string
+          name: string
+          team_size?: string
+          user_id?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          team_size?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           id: string

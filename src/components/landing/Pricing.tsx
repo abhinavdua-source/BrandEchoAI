@@ -2,10 +2,18 @@ import { Reveal } from "./Reveal";
 
 const plans = [
   {
+    name: "Free",
+    price: "$0",
+    period: "/mo",
+    features: ["10 checks a month", "1 brand profile", "Rewrites", "No card needed"],
+    cta: { label: "Start free", href: "/signup" },
+    recommended: false,
+  },
+  {
     name: "Starter",
     price: "$19",
     period: "/mo",
-    features: ["100 checks a month", "Brand profile", "Rewrites"],
+    features: ["100 checks a month", "1 brand profile", "Rewrites"],
     cta: { label: "Start free", href: "/signup" },
     recommended: false,
   },
@@ -22,7 +30,7 @@ const plans = [
     price: "Custom",
     period: "",
     features: ["Unlimited everything", "Dedicated support", "Custom models"],
-    cta: { label: "Book a demo", href: "#demo" },
+    cta: { label: "Book a demo", href: "/demo" },
     recommended: false,
   },
 ];
@@ -37,7 +45,7 @@ export function Pricing() {
             Simple plans that scale with your brand
           </h2>
         </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] items-stretch gap-4">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] items-stretch gap-4">
           {plans.map((p, i) => {
             const dark = p.recommended;
             return (

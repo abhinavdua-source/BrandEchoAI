@@ -182,7 +182,7 @@ export function Hero() {
           <Link to="/signup" className={btnInk}>
             Start free
           </Link>
-          <a href="#demo" className={btnOutline}>
+          <a href="/demo" className={btnOutline}>
             Book a demo
           </a>
         </Reveal>

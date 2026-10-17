@@ -16,7 +16,7 @@ export function FinalCta() {
             Start free
           </a>
           <a
-            href="#demo"
+            href="/demo"
             className="rounded-btn border border-white px-[22px] py-[14px] text-[16px] font-medium text-white transition-colors duration-200 hover:bg-white/12 hover:text-white"
           >
             Book a demo

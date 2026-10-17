@@ -1,4 +1,4 @@
-import { Reveal } from "./Reveal";
+import { Reveal, RevealLines } from "./Reveal";
 
 const problems = [
   {
@@ -19,12 +19,17 @@ export function Problem() {
   return (
     <section aria-labelledby="problem-title" className="border-t border-rule">
       <div className="container-site section-y grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-[clamp(32px,5vw,64px)]">
-        <Reveal className="flex flex-col gap-3.5">
-          <p className="eyebrow">The problem</p>
-          <h2 id="problem-title" className="text-h2">
-            Your brand isn't just a logo. It's every word you publish.
-          </h2>
-        </Reveal>
+        <div className="flex flex-col gap-3.5">
+          <Reveal as="p" className="eyebrow">
+            The problem
+          </Reveal>
+          <RevealLines
+            as="h2"
+            id="problem-title"
+            className="text-h2"
+            text="Your brand isn't just a logo. It's every word you publish."
+          />
+        </div>
         <ul className="m-0 flex list-none flex-col p-0">
           {problems.map((p, i) => (
             <Reveal

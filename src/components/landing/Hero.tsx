@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Reveal } from "./Reveal";
+import { Reveal, RevealLines } from "./Reveal";
 import { btnInk, btnOutline } from "./styles";
 
 type View = "draft" | "final";
@@ -147,7 +147,8 @@ export function Hero() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Gentle drift on the example card as the hero scrolls away.
-  const y = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -28]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -90]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -2]);
 
   return (
     <section
@@ -160,15 +161,14 @@ export function Hero() {
         <Reveal immediate as="p" index={0} className="eyebrow">
           Brand voice, checked before it ships
         </Reveal>
-        <Reveal
+        <RevealLines
           immediate
+          delayMs={120}
           as="h1"
-          index={1}
           id="hero-title"
           className="font-serif text-[clamp(42px,5.6vw,70px)] leading-[1.02] font-normal tracking-[-0.025em] text-balance"
-        >
-          Every word you publish, held to <em className="text-red italic">your</em> brand book.
-        </Reveal>
+          text="Every word you publish, held to *your* brand book."
+        />
         <Reveal
           immediate
           as="p"
@@ -189,7 +189,7 @@ export function Hero() {
       </div>
 
       <Reveal immediate index={3}>
-        <motion.div style={{ y }}>
+        <motion.div style={{ y, rotate }}>
           <ExampleCard />
         </motion.div>
       </Reveal>

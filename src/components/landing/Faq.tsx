@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Reveal } from "./Reveal";
+import { Reveal, RevealLines } from "./Reveal";
 
 const faqs = [
   {
@@ -27,12 +27,12 @@ export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="border-t border-rule">
       <div className="container-site section-y grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-start gap-[clamp(32px,5vw,64px)]">
-        <Reveal className="flex flex-col gap-3.5">
-          <p className="eyebrow">FAQ</p>
-          <h2 id="faq-title" className="text-h2">
-            Questions, answered
-          </h2>
-        </Reveal>
+        <div className="flex flex-col gap-3.5">
+          <Reveal as="p" className="eyebrow">
+            FAQ
+          </Reveal>
+          <RevealLines as="h2" id="faq-title" className="text-h2" text="Questions, answered" />
+        </div>
         <Reveal index={1} className="flex flex-col border-t border-ink">
           {faqs.map((f, i) => {
             const isOpen = open === i;

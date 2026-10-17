@@ -1,4 +1,4 @@
-import { Reveal } from "./Reveal";
+import { Reveal, RevealLines } from "./Reveal";
 
 const plans = [
   {
@@ -39,12 +39,17 @@ export function Pricing() {
   return (
     <section id="pricing" aria-labelledby="pricing-title" className="border-t border-rule bg-tint">
       <div className="container-site section-y flex flex-col gap-10">
-        <Reveal className="flex flex-col gap-3.5">
-          <p className="eyebrow">Pricing</p>
-          <h2 id="pricing-title" className="text-h2">
-            Simple plans that scale with your brand
-          </h2>
-        </Reveal>
+        <div className="flex flex-col gap-3.5">
+          <Reveal as="p" className="eyebrow">
+            Pricing
+          </Reveal>
+          <RevealLines
+            as="h2"
+            id="pricing-title"
+            className="text-h2"
+            text="Simple plans that scale with your brand"
+          />
+        </div>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] items-stretch gap-4">
           {plans.map((p, i) => {
             const dark = p.recommended;

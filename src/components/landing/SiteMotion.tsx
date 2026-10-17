@@ -30,11 +30,13 @@ export function SiteMotion() {
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
     );
-    document.querySelectorAll('[data-reveal="scroll"]').forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll('[data-reveal="scroll"], [data-reveal="lines"][data-trigger="scroll"]')
+      .forEach((el) => observer.observe(el));
 
     const lenis = new Lenis({
       autoRaf: true,
-      duration: 1.15,
+      duration: 1.6,
       anchors: true, // header offset comes from scroll-margin-top in styles.css
       stopInertiaOnNavigate: true,
     });

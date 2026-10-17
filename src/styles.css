@@ -197,11 +197,11 @@
  */
 .motion [data-reveal="scroll"] {
   opacity: 0;
-  transform: translate3d(0, 24px, 0);
+  transform: translate3d(0, 56px, 0) scale(0.96);
   transition:
-    opacity 800ms var(--ease-glide),
-    transform 900ms var(--ease-glide);
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+    opacity 1000ms var(--ease-glide),
+    transform 1200ms var(--ease-glide);
+  transition-delay: calc(var(--reveal-i, 0) * 110ms);
 }
 
 .motion [data-reveal="scroll"].is-in {
@@ -211,19 +211,44 @@
 
 /* Above the fold: plays on first paint, no JavaScript needed. */
 .motion [data-reveal="load"] {
-  animation: reveal-in 900ms var(--ease-glide) both;
-  animation-delay: calc(var(--reveal-i, 0) * 80ms + 60ms);
+  animation: reveal-in 1200ms var(--ease-glide) both;
+  animation-delay: calc(var(--reveal-i, 0) * 110ms + 80ms);
 }
 
 @keyframes reveal-in {
   from {
     opacity: 0;
-    transform: translate3d(0, 24px, 0);
+    transform: translate3d(0, 56px, 0) scale(0.96);
   }
   to {
     opacity: 1;
     transform: none;
   }
+}
+
+/*
+ * Headlines: each rendered line slides up from behind a mask, one line after
+ * another. RevealLines measures which line every word sits on (--line).
+ */
+.line-mask {
+  display: inline-block;
+  vertical-align: top;
+  /* Clip only above and below; let italic overhangs and descenders breathe. */
+  clip-path: inset(-0.05em -0.4em -0.22em -0.4em);
+}
+
+.line-word {
+  display: inline-block;
+}
+
+.motion [data-reveal="lines"] .line-word {
+  transform: translate3d(0, 135%, 0);
+  transition: transform 1250ms var(--ease-glide);
+  transition-delay: calc(var(--line, 0) * 130ms + var(--lines-delay, 0ms));
+}
+
+.motion [data-reveal="lines"].is-in .line-word {
+  transform: none;
 }
 
 /* Lenis drives scrolling when active; native smooth scroll would fight it. */

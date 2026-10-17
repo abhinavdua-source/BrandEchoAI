@@ -9,7 +9,6 @@ const links = [
   { label: "FAQ", href: "#faq" },
 ];
 
-
 export function Nav() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);

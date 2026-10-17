@@ -1,4 +1,4 @@
-import { Reveal } from "./Reveal";
+import { Reveal, RevealLines } from "./Reveal";
 
 const features = [
   {
@@ -22,12 +22,12 @@ export function Features() {
   return (
     <section id="features" aria-labelledby="features-title">
       <div className="container-site section-y flex flex-col gap-10">
-        <Reveal className="flex flex-col gap-3.5">
-          <p className="eyebrow">Features</p>
-          <h2 id="features-title" className="text-h2">
-            What's on the desk
-          </h2>
-        </Reveal>
+        <div className="flex flex-col gap-3.5">
+          <Reveal as="p" className="eyebrow">
+            Features
+          </Reveal>
+          <RevealLines as="h2" id="features-title" className="text-h2" text="What's on the desk" />
+        </div>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] border-t border-l border-t-ink border-l-rule">
           {features.map((f, i) => (
             <Reveal

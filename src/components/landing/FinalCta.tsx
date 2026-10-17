@@ -1,13 +1,15 @@
+import { RevealLines } from "./Reveal";
+
 export function FinalCta() {
   return (
     <section id="signup" aria-labelledby="cta-title" className="bg-red text-white">
       <div className="container-site flex flex-wrap items-center justify-between gap-7 py-[clamp(48px,6vw,72px)]">
-        <h2
+        <RevealLines
+          as="h2"
           id="cta-title"
           className="max-w-[620px] font-serif text-[clamp(30px,3.4vw,42px)] leading-[1.1] font-normal tracking-[-0.02em] text-balance"
-        >
-          Ready to make every word sound like your brand?
-        </h2>
+          text="Ready to make every word sound like your brand?"
+        />
         <div id="demo" className="flex flex-wrap gap-3">
           <a
             href="/signup"

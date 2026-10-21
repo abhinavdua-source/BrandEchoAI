@@ -22,6 +22,7 @@ import { Route as AppAccountRouteImport } from './routes/app/account'
 import { Route as AppBillingRouteImport } from './routes/app/billing'
 import { Route as AppCheckRouteImport } from './routes/app/check'
 import { Route as AppHistoryRouteImport } from './routes/app/history'
+import { Route as ApiWebhooksDodoRouteImport } from './routes/api/webhooks/dodo'
 import { Route as AppBrandsIndexRouteImport } from './routes/app/brands/index'
 import { Route as AppBrandsBrandIdRouteImport } from './routes/app/brands/$brandId'
 import { Route as AppBrandsNewRouteImport } from './routes/app/brands/new'
@@ -92,6 +93,11 @@ const AppHistoryRoute = AppHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiWebhooksDodoRoute = ApiWebhooksDodoRouteImport.update({
+  id: '/api/webhooks/dodo',
+  path: '/api/webhooks/dodo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppBrandsIndexRoute = AppBrandsIndexRouteImport.update({
   id: '/brands/',
   path: '/brands/',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/app/check': typeof AppCheckRoute
   '/app/history': typeof AppHistoryRoute
   '/app/': typeof AppIndexRoute
+  '/api/webhooks/dodo': typeof ApiWebhooksDodoRoute
   '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
   '/app/brands/new': typeof AppBrandsNewRoute
   '/app/checks/$checkId': typeof AppChecksCheckIdRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/app/check': typeof AppCheckRoute
   '/app/history': typeof AppHistoryRoute
   '/app': typeof AppIndexRoute
+  '/api/webhooks/dodo': typeof ApiWebhooksDodoRoute
   '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
   '/app/brands/new': typeof AppBrandsNewRoute
   '/app/checks/$checkId': typeof AppChecksCheckIdRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/app/check': typeof AppCheckRoute
   '/app/history': typeof AppHistoryRoute
   '/app/': typeof AppIndexRoute
+  '/api/webhooks/dodo': typeof ApiWebhooksDodoRoute
   '/app/brands/$brandId': typeof AppBrandsBrandIdRoute
   '/app/brands/new': typeof AppBrandsNewRoute
   '/app/checks/$checkId': typeof AppChecksCheckIdRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/app/check'
     | '/app/history'
     | '/app/'
+    | '/api/webhooks/dodo'
     | '/app/brands/$brandId'
     | '/app/brands/new'
     | '/app/checks/$checkId'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/app/check'
     | '/app/history'
     | '/app'
+    | '/api/webhooks/dodo'
     | '/app/brands/$brandId'
     | '/app/brands/new'
     | '/app/checks/$checkId'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/app/check'
     | '/app/history'
     | '/app/'
+    | '/api/webhooks/dodo'
     | '/app/brands/$brandId'
     | '/app/brands/new'
     | '/app/checks/$checkId'
@@ -238,6 +250,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   ApiHealthRoute: typeof ApiHealthRoute
+  ApiWebhooksDodoRoute: typeof ApiWebhooksDodoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -333,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHistoryRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/webhooks/dodo': {
+      id: '/api/webhooks/dodo'
+      path: '/api/webhooks/dodo'
+      fullPath: '/api/webhooks/dodo'
+      preLoaderRoute: typeof ApiWebhooksDodoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/brands/': {
       id: '/app/brands/'
       path: '/brands'
@@ -399,6 +419,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiWebhooksDodoRoute: ApiWebhooksDodoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

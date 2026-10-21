@@ -1,9 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { plansQuery, usageQuery } from "@/lib/queries";
-import { Alert, Card, PageHeader, Spinner } from "@/components/app/ui";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { z } from "zod/v4";
+import {
+  getBillingStatus,
+  openBillingPortal,
+  startCheckout,
+  switchPlan,
+} from "@/functions/billing";
+import { plansQuery, subscriptionQuery, usageQuery } from "@/lib/queries";
+import { Alert, Button, Card, PageHeader, Spinner, formatDate } from "@/components/app/ui";
 
 export const Route = createFileRoute("/app/billing")({
+  validateSearch: z.object({ checkout: z.string().optional() }),
   component: Billing,
 });
 
@@ -18,22 +27,124 @@ const features: Record<string, string[]> = {
   ],
 };
 
+type PaidPlan = "starter" | "professional";
+const isPaid = (id: string): id is PaidPlan => id === "starter" || id === "professional";
+
 function Billing() {
+  const { checkout } = Route.useSearch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const plans = useQuery(plansQuery());
   const usage = useQuery(usageQuery());
-  if (plans.isPending || usage.isPending) return <Spinner />;
+  const sub = useQuery(subscriptionQuery());
+  const billing = useQuery({ queryKey: ["billing-status"], queryFn: () => getBillingStatus() });
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
   const current = usage.data?.plan_id ?? "free";
+  const paidActive = isPaid(current);
+  const returnedFromCheckout = checkout === "done";
+
+  // After Dodo checkout, the webhook upgrades the plan within a few seconds.
+  useEffect(() => {
+    if (!returnedFromCheckout || paidActive) return;
+    let tries = 0;
+    const id = setInterval(() => {
+      tries += 1;
+      queryClient.invalidateQueries({ queryKey: ["usage"] });
+      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+      if (tries >= 30) clearInterval(id);
+    }, 2000);
+    return () => clearInterval(id);
+  }, [returnedFromCheckout, paidActive, queryClient]);
+
+  useEffect(() => {
+    if (returnedFromCheckout && paidActive) {
+      setNotice("Payment confirmed. Your new plan is active.");
+      queryClient.invalidateQueries({ queryKey: ["can-create-brand"] });
+      navigate({ to: "/app/billing", search: {}, replace: true });
+    }
+  }, [returnedFromCheckout, paidActive, navigate, queryClient]);
+
+  async function run(key: string, action: () => Promise<void>) {
+    setError(null);
+    setBusy(key);
+    try {
+      await action();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setBusy(null);
+    }
+  }
+
+  const upgrade = (plan: PaidPlan) =>
+    run(plan, async () => {
+      const { url } = await startCheckout({ data: { plan } });
+      window.location.assign(url);
+    });
+
+  const changeTo = (plan: PaidPlan) =>
+    run(plan, async () => {
+      await switchPlan({ data: { plan } });
+      setNotice("Plan change requested. It'll show here in a few seconds.");
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["usage"] });
+        queryClient.invalidateQueries({ queryKey: ["subscription"] });
+        setBusy(null);
+      }, 4000);
+    });
+
+  const portal = () =>
+    run("portal", async () => {
+      const { url } = await openBillingPortal();
+      window.location.assign(url);
+    });
+
+  if (plans.isPending || usage.isPending || billing.isPending) return <Spinner />;
+  const enabled = Boolean(billing.data?.enabled);
+  const testMode = billing.data?.mode === "test_mode";
 
   return (
     <>
-      <PageHeader eyebrow="Plan" title="Your plan" />
-      <div className="mb-8 max-w-[760px]">
-        <Alert tone="info">
-          Paid plans and online upgrades are coming soon. Your Free plan stays active in the
-          meantime.
-        </Alert>
+      <PageHeader eyebrow="Plan" title="Your plan">
+        {sub.data?.provider_customer_id && (
+          <Button variant="outline" onClick={portal} disabled={busy !== null}>
+            {busy === "portal" ? "Opening…" : "Manage billing"}
+          </Button>
+        )}
+      </PageHeader>
+
+      <div className="mb-8 flex max-w-[760px] flex-col gap-3">
+        {error && <Alert>{error}</Alert>}
+        {notice && <Alert tone="success">{notice}</Alert>}
+        {returnedFromCheckout && !paidActive && (
+          <Alert tone="info">
+            <span className="inline-flex items-center gap-3">
+              <Spinner label="Confirming your payment…" />
+            </span>
+          </Alert>
+        )}
+        {!enabled && (
+          <Alert tone="info">
+            Online upgrades are coming soon. Your Free plan stays active in the meantime.
+          </Alert>
+        )}
+        {enabled && testMode && (
+          <Alert tone="info">
+            Test mode: no real money moves. Pay with Dodo's test card 4242 4242 4242 4242, any
+            future date and any CVC.
+          </Alert>
+        )}
+        {paidActive && sub.data?.current_period_end && (
+          <p className="text-[15px] text-secondary">
+            Renews on {formatDate(sub.data.current_period_end)}. Cancel or update your card under
+            Manage billing.
+          </p>
+        )}
       </div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
+
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-4">
         {plans.data?.map((p) => {
           const isCurrent = p.id === current;
           return (
@@ -55,14 +166,29 @@ function Billing() {
                   <li key={f}>{f}</li>
                 ))}
               </ul>
-              {!isCurrent && p.id !== "free" && (
-                <button
-                  type="button"
-                  disabled
-                  className="min-h-11 cursor-not-allowed rounded-btn border border-outline text-[15px] font-medium text-secondary"
+              {!isCurrent && isPaid(p.id) && (
+                <Button
+                  variant={p.id === "professional" ? "ink" : "outline"}
+                  disabled={!enabled || busy !== null}
+                  onClick={() =>
+                    paidActive ? changeTo(p.id as PaidPlan) : upgrade(p.id as PaidPlan)
+                  }
                 >
-                  Upgrade — coming soon
-                </button>
+                  {!enabled
+                    ? "Upgrade — coming soon"
+                    : busy === p.id
+                      ? paidActive
+                        ? "Switching…"
+                        : "Opening checkout…"
+                      : paidActive
+                        ? `Switch to ${p.name}`
+                        : `Upgrade to ${p.name}`}
+                </Button>
+              )}
+              {!isCurrent && p.id === "free" && paidActive && (
+                <p className="text-[14px] text-secondary">
+                  To move back to Free, cancel under Manage billing.
+                </p>
               )}
             </Card>
           );

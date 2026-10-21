@@ -74,3 +74,20 @@ export const canCreateBrandQuery = () =>
     queryKey: ["can-create-brand"],
     queryFn: async () => unwrap(await supabase.rpc("can_create_brand")) as boolean,
   });
+
+export type SubscriptionInfo = Pick<
+  Tables<"subscriptions">,
+  "plan_id" | "status" | "provider" | "provider_customer_id" | "current_period_end"
+>;
+
+export const subscriptionQuery = () =>
+  queryOptions({
+    queryKey: ["subscription"],
+    queryFn: async () =>
+      unwrap(
+        await supabase
+          .from("subscriptions")
+          .select("plan_id, status, provider, provider_customer_id, current_period_end")
+          .maybeSingle(),
+      ) as SubscriptionInfo | null,
+  });

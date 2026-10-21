@@ -184,6 +184,7 @@ export type Database = {
           plan_id: string
           provider: string | null
           provider_customer_id: string | null
+          provider_event_at: string | null
           provider_subscription_id: string | null
           status: string
           updated_at: string
@@ -194,6 +195,7 @@ export type Database = {
           plan_id?: string
           provider?: string | null
           provider_customer_id?: string | null
+          provider_event_at?: string | null
           provider_subscription_id?: string | null
           status?: string
           updated_at?: string
@@ -204,6 +206,7 @@ export type Database = {
           plan_id?: string
           provider?: string | null
           provider_customer_id?: string | null
+          provider_event_at?: string | null
           provider_subscription_id?: string | null
           status?: string
           updated_at?: string

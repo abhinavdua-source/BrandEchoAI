@@ -116,6 +116,8 @@ export async function createCheckout(opts: {
       customer: { customer_id: customerId },
       return_url: `${opts.origin}/app/billing?checkout=done`,
       metadata: { user_id: opts.userId, plan: opts.plan },
+      // Show a "discount code" field (codes are created in the Dodo dashboard).
+      feature_flags: { allow_discount_code: true },
     });
     if (!session.checkout_url) throw new Error("no checkout_url");
     return session.checkout_url;

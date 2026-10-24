@@ -6,8 +6,10 @@ export const Route = createFileRoute("/api/health")({
     handlers: {
       GET: async () => {
         const { healthReport } = await import("@/server/health");
-        const report = await healthReport();
-        const ok = report.anthropicKeySet && report.claudeReachable && report.databaseReachable;
+        const { billingHealth } = await import("@/server/billing");
+        const [core, billing] = await Promise.all([healthReport(), billingHealth()]);
+        const report = { ...core, billing };
+        const ok = core.anthropicKeySet && core.claudeReachable && core.databaseReachable;
         return Response.json(report, {
           status: ok ? 200 : 503,
           headers: { "cache-control": "no-store" },

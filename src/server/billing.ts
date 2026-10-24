@@ -226,3 +226,34 @@ export async function applyWebhook(rawBody: string, headers: Record<string, stri
   if (error) throw error;
   return { handled: true, type: event.type, userId, plan, status };
 }
+
+/** Readiness of billing for /api/health. Uses read-only calls; returns no secrets. */
+export async function billingHealth() {
+  const report = {
+    mode: MODE,
+    dodoKeySet: Boolean(process.env["DODO_PAYMENTS_API_KEY"]),
+    dodoReachable: false,
+    webhookSecretSet: Boolean(process.env["DODO_PAYMENTS_WEBHOOK_SECRET"]),
+    serviceRoleWorks: false,
+    upgradesEnabledHere: billingAvailable().enabled,
+  };
+  if (report.dodoKeySet) {
+    try {
+      await dodo().products.retrieve(PRODUCTS[MODE].starter);
+      report.dodoReachable = true;
+    } catch (err) {
+      console.error("[health] Dodo lookup failed", err instanceof Error ? err.message : err);
+    }
+  }
+  if (process.env["SUPABASE_SERVICE_ROLE_KEY"]) {
+    try {
+      const { error } = await supabaseAdmin
+        .from("subscriptions")
+        .select("user_id", { count: "exact", head: true });
+      report.serviceRoleWorks = !error;
+    } catch (err) {
+      console.error("[health] service role check failed", err);
+    }
+  }
+  return report;
+}

@@ -178,7 +178,18 @@ export async function applyWebhook(rawBody: string, headers: Record<string, stri
   if (!secret) throw new Error("DODO_PAYMENTS_WEBHOOK_SECRET is not set");
 
   const event = dodo().webhooks.unwrap(rawBody, { headers, key: secret });
-  if (!event.type.startsWith("subscription.")) return { handled: false, type: event.type };
+  if (!event.type.startsWith("subscription.")) {
+    if (event.type.startsWith("payment.")) {
+      // Diagnostic: a subscription payment carries a subscription_id.
+      const p = event.data as unknown as { subscription_id?: string | null };
+      return {
+        handled: false,
+        type: event.type,
+        isSubscriptionPayment: Boolean(p.subscription_id),
+      };
+    }
+    return { handled: false, type: event.type };
+  }
 
   const sub = event.data as unknown as {
     subscription_id: string;
@@ -287,9 +298,13 @@ export async function billingHealth() {
     serviceRoleWorks: false,
     upgradesEnabledHere: billingAvailable().enabled,
   };
+  const products: Record<string, { recurring: boolean; priceType: string } | null> = {};
   if (report.dodoKeySet) {
     try {
-      await dodo().products.retrieve(PRODUCTS[MODE].starter);
+      for (const plan of ["starter", "professional"] as const) {
+        const p = await dodo().products.retrieve(PRODUCTS[MODE][plan]);
+        products[plan] = { recurring: p.is_recurring, priceType: p.price.type };
+      }
       report.dodoReachable = true;
     } catch (err) {
       console.error("[health] Dodo lookup failed", err instanceof Error ? err.message : err);
@@ -305,5 +320,5 @@ export async function billingHealth() {
       console.error("[health] service role check failed", err);
     }
   }
-  return report;
+  return { ...report, products };
 }

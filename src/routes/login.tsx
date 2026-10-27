@@ -7,7 +7,10 @@ import { Alert, Button, Field, Input } from "@/components/app/ui";
 import { safeRedirect } from "@/lib/auth";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Log in — BrandEchoAI" }] }),
+  head: () => ({
+    meta: [{ title: "Log in — BrandEchoAI" }],
+    links: [{ rel: "canonical", href: "https://brandechoai.studio/login" }],
+  }),
   ssr: false,
   validateSearch: z.object({ redirect: z.string().optional() }),
   component: LogIn,

@@ -6,7 +6,12 @@ import { Alert, Button, Field, Input, Spinner } from "@/components/app/ui";
 import { useSession } from "@/lib/auth";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: "Choose a new password — BrandEchoAI" }] }),
+  head: () => ({
+    meta: [
+      { title: "Choose a new password — BrandEchoAI" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   ssr: false,
   component: ResetPassword,
 });

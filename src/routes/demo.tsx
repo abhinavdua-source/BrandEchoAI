@@ -14,6 +14,7 @@ export const Route = createFileRoute("/demo")({
           "See BrandEchoAI check your own copy against your brand book. Tell us about your team.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://brandechoai.studio/demo" }],
   }),
   component: BookDemo,
 });

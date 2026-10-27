@@ -23,7 +23,9 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
+      { property: "og:url", content: "https://brandechoai.studio/" },
     ],
+    links: [{ rel: "canonical", href: "https://brandechoai.studio/" }],
   }),
   component: Index,
 });

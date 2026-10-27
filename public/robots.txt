@@ -1,14 +1,9 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# BrandEchoAI — https://brandechoai.studio
 User-agent: *
 Allow: /
+# Private app pages, APIs and one-time auth links stay out of search.
+Disallow: /app
+Disallow: /api/
+Disallow: /reset-password
+
+Sitemap: https://brandechoai.studio/sitemap.xml

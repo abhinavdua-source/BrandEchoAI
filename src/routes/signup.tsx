@@ -6,7 +6,10 @@ import { Alert, Button, Field, Input } from "@/components/app/ui";
 import { siteUrl } from "@/lib/auth";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Create your account — BrandEchoAI" }] }),
+  head: () => ({
+    meta: [{ title: "Create your account — BrandEchoAI" }],
+    links: [{ rel: "canonical", href: "https://brandechoai.studio/signup" }],
+  }),
   ssr: false,
   component: SignUp,
 });

@@ -6,7 +6,9 @@ import { Alert, Button, Field, Input } from "@/components/app/ui";
 import { siteUrl } from "@/lib/auth";
 
 export const Route = createFileRoute("/forgot-password")({
-  head: () => ({ meta: [{ title: "Reset your password — BrandEchoAI" }] }),
+  head: () => ({
+    meta: [{ title: "Reset your password — BrandEchoAI" }, { name: "robots", content: "noindex" }],
+  }),
   ssr: false,
   component: ForgotPassword,
 });

@@ -7,6 +7,7 @@ import {
   openBillingPortal,
   startCheckout,
   switchPlan,
+  syncBilling,
 } from "@/functions/billing";
 import { plansQuery, subscriptionQuery, usageQuery } from "@/lib/queries";
 import { Alert, Button, Card, PageHeader, Spinner, formatDate } from "@/components/app/ui";
@@ -46,18 +47,39 @@ function Billing() {
   const paidActive = isPaid(current);
   const returnedFromCheckout = checkout === "done";
 
-  // After Dodo checkout, the webhook upgrades the plan within a few seconds.
+  const hasCustomer = Boolean(sub.data?.provider_customer_id);
+
+  // Ask Dodo directly for the latest subscription state (in case a webhook
+  // was missed), then refresh the plan shown here.
+  async function syncNow() {
+    try {
+      await syncBilling();
+    } catch {
+      /* the webhook may still arrive */
+    }
+    await queryClient.invalidateQueries({ queryKey: ["usage"] });
+    await queryClient.invalidateQueries({ queryKey: ["subscription"] });
+  }
+
+  // Once per visit for accounts that have been to checkout.
+  useEffect(() => {
+    if (hasCustomer && !returnedFromCheckout) void syncNow();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasCustomer]);
+
+  // After Dodo checkout: keep checking for up to ~90 seconds.
   useEffect(() => {
     if (!returnedFromCheckout || paidActive) return;
     let tries = 0;
+    void syncNow();
     const id = setInterval(() => {
       tries += 1;
-      queryClient.invalidateQueries({ queryKey: ["usage"] });
-      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+      void syncNow();
       if (tries >= 30) clearInterval(id);
-    }, 2000);
+    }, 3000);
     return () => clearInterval(id);
-  }, [returnedFromCheckout, paidActive, queryClient]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [returnedFromCheckout, paidActive]);
 
   useEffect(() => {
     if (returnedFromCheckout && paidActive) {

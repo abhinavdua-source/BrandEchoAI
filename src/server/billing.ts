@@ -209,6 +209,26 @@ export async function applyWebhook(rawBody: string, headers: Record<string, stri
     return { handled: false, type: event.type, stale: true };
   }
 
+  await saveSubscription(userId, sub, eventAt);
+  return {
+    handled: true,
+    type: event.type,
+    userId,
+    plan: planForProduct(sub.product_id),
+    status: sub.status,
+  };
+}
+
+type DodoSub = {
+  subscription_id: string;
+  product_id: string;
+  status: string;
+  next_billing_date?: string | null;
+  customer: { customer_id: string };
+};
+
+/** Write one Dodo subscription's state to the user's row (shared by webhook and sync). */
+async function saveSubscription(userId: string, sub: DodoSub, eventAt: string) {
   const plan = planForProduct(sub.product_id);
   const status = STATUS[sub.status] ?? "canceled";
   const { error } = await supabaseAdmin.from("subscriptions").upsert(
@@ -226,7 +246,35 @@ export async function applyWebhook(rawBody: string, headers: Record<string, stri
     { onConflict: "user_id" },
   );
   if (error) throw error;
-  return { handled: true, type: event.type, userId, plan, status };
+}
+
+// Prefer the subscription that grants access, then the most recent one.
+const RANK: Record<string, number> = { active: 0, on_hold: 1, past_due: 1, paused: 2, pending: 3 };
+
+/**
+ * Pull the user's subscription straight from Dodo and apply it. Backstop for
+ * missed or delayed webhooks (called when returning from checkout).
+ */
+export async function syncFromDodo(userId: string) {
+  const row = await subscriptionRow(userId);
+  if (!row?.provider_customer_id) return { found: false as const };
+  try {
+    const subs: DodoSub[] = [];
+    for await (const s of dodo().subscriptions.list({ customer_id: row.provider_customer_id })) {
+      subs.push(s as unknown as DodoSub & { created_at: string });
+      if (subs.length >= 20) break;
+    }
+    console.log(
+      "[billing] sync",
+      JSON.stringify(subs.map((s) => ({ status: s.status, plan: planForProduct(s.product_id) }))),
+    );
+    if (!subs.length) return { found: false as const };
+    const best = [...subs].sort((a, b) => (RANK[a.status] ?? 9) - (RANK[b.status] ?? 9))[0]!;
+    await saveSubscription(userId, best, new Date().toISOString());
+    return { found: true as const, status: best.status, plan: planForProduct(best.product_id) };
+  } catch (err) {
+    toUserError(err, "sync");
+  }
 }
 
 /** Readiness of billing for /api/health. Uses read-only calls; returns no secrets. */

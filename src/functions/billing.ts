@@ -3,7 +3,13 @@ import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod/v4";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { UserFacingError } from "@/server/claude";
-import { billingAvailable, changePlan, createCheckout, customerPortalLink } from "@/server/billing";
+import {
+  billingAvailable,
+  changePlan,
+  createCheckout,
+  customerPortalLink,
+  syncFromDodo,
+} from "@/server/billing";
 
 /* Billing server functions for the Plan page. All require a signed-in user. */
 
@@ -69,6 +75,17 @@ export const openBillingPortal = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     try {
       return { url: await customerPortalLink(context.userId) };
+    } catch (err) {
+      rethrow(err);
+    }
+  });
+
+/** Re-reads the user's subscription from Dodo (backstop for missed webhooks). */
+export const syncBilling = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    try {
+      return await syncFromDodo(context.userId);
     } catch (err) {
       rethrow(err);
     }

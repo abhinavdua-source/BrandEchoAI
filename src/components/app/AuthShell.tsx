@@ -32,7 +32,9 @@ export function AuthShell({
             {title}
           </h1>
           {subtitle && <p className="mt-3 text-[16px] leading-[1.55] text-muted">{subtitle}</p>}
-          <div className="mt-8">{children}</div>
+          <div data-clarity-mask="True" className="mt-8">
+            {children}
+          </div>
           {footer && (
             <div className="mt-8 border-t border-rule pt-6 text-[15px] text-muted">{footer}</div>
           )}

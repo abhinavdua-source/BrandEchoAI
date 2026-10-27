@@ -25,7 +25,7 @@ export const Route = createFileRoute("/app")({
 function AppLayout() {
   const { user } = useSession();
   return (
-    <div className="flex min-h-screen flex-col bg-paper">
+    <div data-clarity-mask="True" className="flex min-h-screen flex-col bg-paper">
       <AppHeader email={user?.email ?? ""} />
       <main className="mx-auto w-full max-w-[1160px] flex-1 px-6 pt-[clamp(32px,5vw,56px)] pb-20">
         <Outlet />

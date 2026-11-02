@@ -26,9 +26,8 @@ const PRODUCTS: Record<Mode, Record<PaidPlan, string>> = {
     professional: "pdt_0NqCZgysviJSYCAgxXSho",
   },
   live_mode: {
-    // Fill in once the live products exist in Dodo.
-    starter: "",
-    professional: "",
+    starter: "pdt_0Nr4iTZjMzcopqLI1b9Lk",
+    professional: "pdt_0Nr4iTzXPiJWr3x5xneZW",
   },
 };
 
